@@ -4803,9 +4803,11 @@ function shortUrl(href){
     tbl.querySelectorAll("th,td").forEach(function(c){
       if(c.textContent.trim().length<=6&&!c.querySelector("a"))c.style.whiteSpace="nowrap";
     });
-    /* 師資表(表頭含研究領域…且≥9列)再包進可摺疊 details */
+    /* 師資表(表頭含研究領域…且≥6列)再包進可摺疊 details */
     var head=tbl.querySelector("thead");
     if(!head||!/研究(領域|專長|主題|方向)/.test(head.textContent))return;
+    /* 排除名額表:表頭含「名額」或「代碼」者為招生名額表,不可摺疊也不可標成師資名單 */
+    if(/名額|代碼/.test(head.textContent))return;
     var rows=tbl.querySelectorAll("tbody tr").length;
     if(rows<6)return;
     var det=document.createElement("details");det.className="fac";
