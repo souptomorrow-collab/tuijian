@@ -70,6 +70,7 @@
   .twrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;}
   .twrap table{margin:0;}
   .overview{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.md li.sub{margin-left:1.6em;list-style-type:circle;color:#444}
 </style>
 </head>
 <body>
@@ -4949,8 +4950,8 @@ function mdToHtml(src){
       rows.forEach(function(r){t+="<tr>"+r.map(function(c){return "<td>"+inline(c.trim())+"</td>";}).join("")+"</tr>";});
       out.push(t+"</tbody></table>");continue;
     }
-    var ul=L.match(/^\s*[-*]\s+(.*)$/);
-    if(ul){flushPara();if(inOl){out.push("</ol>");inOl=false;}if(!inUl){out.push("<ul>");inUl=true;}out.push("<li>"+inline(ul[1])+"</li>");i++;continue;}
+    var ul=L.match(/^(\s*)[-*]\s+(.*)$/);
+    if(ul){flushPara();if(inOl){out.push("</ol>");inOl=false;}if(!inUl){out.push("<ul>");inUl=true;}out.push((ul[1].length>=2?'<li class="sub">':"<li>")+inline(ul[2])+"</li>");i++;continue;}
     var ol=L.match(/^\s*\d+[.)]\s+(.*)$/);
     if(ol){flushPara();if(inUl){out.push("</ul>");inUl=false;}if(!inOl){out.push("<ol>");inOl=true;}out.push("<li>"+inline(ol[1])+"</li>");i++;continue;}
     var bq=L.match(/^\s*>\s?(.*)$/);
