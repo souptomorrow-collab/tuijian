@@ -180,6 +180,17 @@ kbd{font:600 .72rem var(--font);color:var(--muted);border:1px solid var(--border
 .overview td:first-child a{color:var(--text);text-decoration:none;}
 .overview td:first-child a:hover{color:var(--brand);}
 .overview span[style*="color"]{color:var(--muted) !important;}
+.overview td:not(:first-child){color:var(--text-2);padding:14px 16px;}
+.overview td:first-child{padding-top:14px;font-size:.95rem;}
+/* 比較表格子(學校頁摘要卡共用):小標籤、一行一項、115 對照 */
+.cc-tag{display:table;margin:0 0 6px;padding:0 8px;border-radius:999px;font-size:.72rem;font-weight:650;line-height:1.75;letter-spacing:.02em;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);white-space:nowrap;}
+.cc-list{display:block;}
+.cc-ln{display:block;position:relative;padding-left:.95em;}
+.cc-ln+.cc-ln{margin-top:4px;}
+.cc-ln::before{content:"";position:absolute;left:.1em;top:.78em;width:4px;height:4px;border-radius:50%;background:var(--border-2);}
+.cc-old{display:block;margin-top:9px;padding-top:7px;border-top:1px dashed var(--border-2);font-size:.8em;line-height:1.65;color:var(--muted);}
+.cc-new{display:inline-block;margin-right:5px;padding:0 6px;border-radius:5px;font-size:.72rem;font-weight:650;line-height:1.7;background:var(--brand-soft);color:var(--brand-ink);vertical-align:1px;}
+.overview td strong,.fact .body strong{font-weight:600;color:var(--text);}
 details.more{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);margin:12px 0;}
 details.more>summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:650;display:flex;align-items:center;gap:10px;}
 details.more>summary::-webkit-details-marker{display:none;}
@@ -252,23 +263,31 @@ details.more .notice{margin:0;border:0;padding:0;background:transparent;}
 /* md-fp 文章清單 */
 .fp-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;}
 .fp-h small{font-size:.76rem;font-weight:500;color:var(--muted);letter-spacing:.02em;font-variant-numeric:tabular-nums;}
-.md li.fp-post{margin:16px 0 4px;}
-.md li.fp-post::marker{color:var(--border-2);}
-.fp-t{color:var(--text);font-weight:600;text-decoration:none;}
+.md ul.fpl{padding-left:0;}
+.md ul.fpl>li.fp-li{margin-left:1.4em;}
+.md ul.fpl>li.fp-li.sub{margin-left:2.8em;}
+/* 一篇文章＝一張卡片:標題、日期看板、引句 */
+.md li.fp-post{list-style:none;margin:10px 0;padding:14px 18px 15px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);}
+.fp-t{color:var(--text);font-weight:650;text-decoration:none;}
 .md a.fp-t:hover{color:var(--brand);text-decoration:underline;}
-.fp-t::after{content:"\00a0\2197";font-size:.78em;font-weight:400;color:var(--muted);}
-.fp-m{display:block;margin-top:1px;font-size:.78rem;line-height:1.6;color:var(--muted);letter-spacing:.01em;font-variant-numeric:tabular-nums;}
-.fp-m>span::before{content:"·";margin:0 .5em;}
+.fp-post>.fp-t::after{content:"\00a0\2197";font-size:.8em;font-weight:400;color:var(--muted);}
+.fp-m{font-size:.78rem;line-height:1.6;color:var(--muted);letter-spacing:.01em;font-variant-numeric:tabular-nums;}
+.fp-post>.fp-m{display:block;margin-top:2px;}
 .fp-m>*{white-space:nowrap;}
-.md li.fp-q,.md li.fp-more{list-style:none;margin:0;padding:4px 0 4px 14px;border-left:2px solid var(--border);font-size:.94em;line-height:1.8;color:var(--text-2);}
-.md li.fp-post+li.fp-q,.md li.fp-post+li.fp-more{margin-top:8px;}
-.md li.fp-more{font-size:.8rem;color:var(--muted);}
-.fp-lb{display:inline-block;margin-right:6px;padding:0 7px;border-radius:5px;background:var(--surface-3);color:var(--muted);font-size:.74rem;font-weight:600;line-height:1.8;letter-spacing:.02em;vertical-align:1px;white-space:nowrap;font-variant-numeric:tabular-nums;}
-.md li.fp-oldh{list-style:none;margin:20px 0 4px;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.03em;}
-.md li.fp-old{list-style:none;margin:4px 0 0;padding-left:14px;border-left:2px solid var(--border);font-size:.9em;color:var(--text-2);}
-.md li.fp-old .fp-t{font-weight:500;}
-.md li.fp-old .fp-m{display:inline;margin-left:8px;}
-.md li.fp-none{color:var(--muted);font-size:.92em;}
+.fp-m>*+*::before,.fp-lb>*+*::before{content:"·";margin:0 .45em;}
+.md ul.fp-qs{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid var(--border);}
+.md li.fp-q{margin:0;}
+.md li.fp-q+li.fp-q{margin-top:12px;}
+.fp-lb{display:block;font-size:.76rem;line-height:1.6;color:var(--muted);letter-spacing:.01em;font-variant-numeric:tabular-nums;}
+.fp-q>.raw{display:block;margin-top:1px;font-size:.95rem;line-height:1.8;color:var(--text-2);}
+.md li.fp-more{margin:10px 0 0;font-size:.78rem;color:var(--muted);}
+/* 較早文章:一行一篇 */
+.md li.fp-oldh{list-style:none;margin:18px 0 6px;font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.03em;}
+.md li.fp-old{list-style:none;margin:2px 0;font-size:.9rem;line-height:1.7;}
+.fp-old>time{display:inline-block;min-width:6.6em;margin-right:6px;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;}
+.fp-old>.fp-t{font-weight:500;color:var(--text-2);}
+.fp-old>.fp-m{margin-left:8px;}
+.md li.fp-none{list-style:none;margin:14px 0;color:var(--muted);font-size:.9em;}
 
 /* 表格 */
 .tframe{position:relative;margin:16px 0;}
@@ -300,7 +319,9 @@ details.fac .tframe{margin:0;}
   .md table{font-size:.84rem;}
   .md th,.md td{padding:8px 10px;}
   .md blockquote{padding:10px 14px;}
-  .fp-lb{display:table;margin:2px 0 3px;}
+  .md li.fp-post{padding:12px 14px 13px;}
+  .fp-old>.fp-m{display:block;margin:0 0 4px;}
+  .fp-old>time{min-width:0;}
 }
 
 /* ═══════════ 本頁目錄 ═══════════ */
@@ -5493,15 +5514,28 @@ function fpItem(t,sub){
   var m=t.match(FP_POST);
   if(m){
     var src=m[2].split("/"),who=src.slice(1).join("/");
-    return '<li class="fp-post'+(sub?" sub fp-old":"")+'"><a class="fp-t raw" href="'+esc(m[4])+'" target="_blank" rel="noopener">'+esc(m[3])+
-      '</a><span class="fp-m"><time>'+m[1]+"</time><span>"+esc(src[0])+"</span>"+(who?"<span>"+esc(who)+"</span>":"")+"</span></li>";
+    var link='<a class="fp-t raw" href="'+esc(m[4])+'" target="_blank" rel="noopener">'+esc(m[3])+"</a>";
+    var meta="<span>"+esc(src[0])+"</span>"+(who?"<span>"+esc(who)+"</span>":"");
+    if(sub)return '<li class="fp-old"><time>'+m[1]+"</time>"+link+'<span class="fp-m">'+meta+"</span></li>";   /* 較早文章:一行一篇 */
+    return '<li class="fp-post">'+link+'<span class="fp-m"><time>'+m[1]+"</time>"+meta+"</span></li>";
   }
-  if(sub&&(m=t.match(FP_BODY)))return '<li class="sub fp-q"><span class="fp-lb">本文</span><span class="raw">「'+inline(m[1])+"」</span></li>";
-  if(sub&&(m=t.match(FP_CMT)))return '<li class="sub fp-q"><span class="fp-lb">留言 '+m[1]+"・"+esc(m[2])+"・"+m[3]+'</span><span class="raw">「'+inline(m[4])+"」</span></li>";
-  if(sub&&/^[(（]另有/.test(t))return '<li class="sub fp-more">'+inline(t)+"</li>";
+  if(sub&&(m=t.match(FP_BODY)))return '<li class="fp-q"><span class="fp-lb">本文</span><span class="raw">'+inline(m[1])+"</span></li>";
+  if(sub&&(m=t.match(FP_CMT)))return '<li class="fp-q"><span class="fp-lb"><span>留言 '+m[1]+"</span><span>"+esc(m[2])+"</span><span>"+m[3]+'</span></span><span class="raw">'+inline(m[4])+"</span></li>";
+  if(sub&&/^[(（]另有/.test(t))return '<li class="fp-more">'+inline(t)+"</li>";
   if(!sub&&/^較早文章/.test(t))return '<li class="fp-oldh">'+inline(t.replace(/[:：]\s*$/,""))+"</li>";
   if(!sub&&/^查無/.test(t))return '<li class="fp-none">'+inline(t)+"</li>";
   return null;
+}
+/* 每篇文章的本文/留言收進該篇的卡片裡 */
+function groupFp(root){
+  $$("li.fp-post",root).forEach(function(li){
+    var qs=null,n=li.nextElementSibling;
+    while(n&&(n.classList.contains("fp-q")||n.classList.contains("fp-more"))){
+      var nx=n.nextElementSibling;
+      if(!qs){qs=document.createElement("ul");qs.className="fp-qs";li.appendChild(qs);}
+      qs.appendChild(n);n=nx;
+    }
+  });
 }
 function mdToHtml(src,fp){
   var lines=src.replace(/\r\n/g,"\n").split("\n");
@@ -5535,7 +5569,7 @@ function mdToHtml(src,fp){
     if(ul){
       flushPara();if(inOl){out.push("</ol>");inOl=false;}if(!inUl){out.push(fp?'<ul class="fpl">':"<ul>");inUl=true;}
       var isSub=ul[1].length>=2,fi=fp?fpItem(ul[2],isSub):null;
-      out.push(fi||(isSub?'<li class="sub">':"<li>")+inline(ul[2])+"</li>");i++;continue;
+      out.push(fi||(isSub?(fp?'<li class="sub fp-li">':'<li class="sub">'):(fp?'<li class="fp-li">':"<li>"))+inline(ul[2])+"</li>");i++;continue;
     }
     var ol=L.match(/^\s*\d+[.)]\s+(.*)$/);
     if(ol){flushPara();if(inUl){out.push("</ul>");inUl=false;}if(!inOl){out.push("<ol>");inOl=true;}out.push("<li>"+inline(ol[1])+"</li>");i++;continue;}
@@ -5601,7 +5635,9 @@ function postProcess(root){
 function renderMd(el){
   if(el.getAttribute("data-rendered"))return;
   var id=el.getAttribute("data-src"),s=document.getElementById(id);
-  el.innerHTML=s?mdToHtml(s.textContent,/^md-fp-/.test(id)):"";
+  var fp=/^md-fp-/.test(id);
+  el.innerHTML=s?mdToHtml(s.textContent,fp):"";
+  if(fp)groupFp(el);
   postProcess(el);punctEl(el);el.setAttribute("data-rendered","1");
 }
 
@@ -5626,7 +5662,7 @@ function statusText(s){
 var cmp=$(".overview table"),ROWS={},LABELS=[];
 if(cmp){
   var trs=$$("tr",cmp);
-  LABELS=$$("th",trs[0]).map(function(th){return th.textContent.trim();});
+  LABELS=$$("th",trs[0]).map(function(th){return punctStr(th.textContent.trim());});
   trs.slice(1).forEach(function(tr){
     var tds=$$("td",tr);
     if(tds.length<2||tds[0].hasAttribute("colspan")){tr.classList.add("note-row");return;}
@@ -5634,6 +5670,39 @@ if(cmp){
     tds.forEach(function(td,i){if(i>0&&LABELS[i])td.setAttribute("data-label",LABELS[i]);});
     var s=SCHOOLS.filter(function(x){return x.row===name;})[0];
     if(s)tds[0].innerHTML='<a href="#'+s.k+'">'+tds[0].innerHTML+"</a>";
+  });
+}
+/* 比較表每格:開頭「116 …:」變小標籤、內容在最外層的 、;,。—— 處斷成一行一項、115 對照移到格底(只改畫面) */
+var CMP_SEP={1:"、；;",2:"；;",3:"，,、；;。"};
+function splitTop(html,seps){
+  var out=[],buf="",par=0,tags=0,i=0;
+  while(i<html.length){
+    var ch=html.charAt(i);
+    if(ch==="<"){
+      var j=html.indexOf(">",i),tag=html.slice(i,j+1);
+      if(/^<\//.test(tag))tags--;else if(!/^<(br|img|hr|wbr)\b/i.test(tag)&&!/\/>$/.test(tag))tags++;
+      buf+=tag;i=j+1;continue;
+    }
+    if(ch==="（"||ch==="(")par++;else if((ch==="）"||ch===")")&&par>0)par--;
+    if(!par&&!tags&&(seps.indexOf(ch)>=0||html.substr(i,2)==="——")){out.push(buf);buf="";i+=html.substr(i,2)==="——"?2:1;continue;}
+    buf+=ch;i++;
+  }
+  out.push(buf);
+  return out.map(function(s){return s.replace(/^(\s|<br>)+|(\s|<br>)+$/g,"");}).filter(function(s){return s.replace(/<[^>]+>/g,"").trim();});
+}
+function tidyCompare(){
+  Object.keys(ROWS).forEach(function(name){
+    ROWS[name].forEach(function(td,ci){
+      if(!ci||!CMP_SEP[ci])return;
+      var h=td.innerHTML,old="",tag="";
+      var mo=h.match(/(?:<br>\s*)?<span style="[^"]*">(\s*115\s*對照[\s\S]*?)<\/span>\s*$/);
+      if(mo){old='<span class="cc-old">'+mo[1]+"</span>";h=h.slice(0,mo.index);}
+      h=h.replace(/✅\s*/g,"").replace(/🆕\s*/g,'<span class="cc-new">新設</span>').trim();
+      var mt=h.match(/^((?:<strong>)?\s*116(?:(?!<br)[^：:])*?(?:<\/strong>)?)\s*[：:]\s*/);
+      if(mt){var tt=mt[1].replace(/<[^>]+>/g,"").trim();if(tt.length<=16){tag='<span class="cc-tag">'+tt+"</span>";h=h.slice(mt[0].length);}}
+      var lines=splitTop(h,CMP_SEP[ci]);
+      td.innerHTML=tag+(lines.length>1?'<span class="cc-list">'+lines.map(function(l){return '<span class="cc-ln">'+l+"</span>";}).join("")+"</span>":h)+old;
+    });
   });
 }
 function regDates(s){
@@ -5907,7 +5976,7 @@ window.addEventListener("beforeprint",function(){$$("details.fac").forEach(funct
 window.addEventListener("afterprint",function(){$$("details.fac").forEach(function(d){d.open=d.dataset.o==="1";});});
 
 /* ═════════ 啟動 ═════════ */
-punctEl(pOverview);punctEl($("#notes"));
+punctEl(pOverview);punctEl($("#notes"));if(cmp)tidyCompare();
 var r0=parseRoute(location.hash)||parseRoute(store("tuijian:last"))||{page:"overview"};
 render(r0,{initial:true});
 if(window.ResizeObserver&&topbar)new ResizeObserver(function(){afterLayout(measure);}).observe(topbar);
