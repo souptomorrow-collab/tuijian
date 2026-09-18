@@ -191,6 +191,43 @@ kbd{font:600 .72rem var(--font);color:var(--muted);border:1px solid var(--border
 .cc-old{display:block;margin-top:9px;padding-top:7px;border-top:1px dashed var(--border-2);font-size:.8em;line-height:1.65;color:var(--muted);}
 .cc-new{display:inline-block;margin-right:5px;padding:0 6px;border-radius:5px;font-size:.72rem;font-weight:650;line-height:1.7;background:var(--brand-soft);color:var(--brand-ink);vertical-align:1px;}
 .overview td strong,.fact .body strong{font-weight:600;color:var(--text);}
+/* 總覽:116 變動摘要(每校一段) */
+.notice ul.nm-list{list-style:none;padding:0;margin:2px 0 0;}
+.notice li.nm-item{padding:13px 0;border-top:1px solid var(--border);margin:0;}
+.notice li.nm-item:first-child{border-top:0;padding-top:4px;}
+.nm-hd{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin-bottom:6px;}
+.nm-name{font-weight:700;font-size:1rem;color:var(--text);text-decoration:none;}
+a.nm-name:hover{color:var(--brand);text-decoration:underline;}
+.nm-hd .cc-tag{display:inline-block;margin:0;}
+.nm-sub{margin:10px 0 4px;padding-top:14px;border-top:1px solid var(--border);font-weight:700;font-size:.9rem;color:var(--text);}
+/* 總覽頁首 */
+.hero .sub .sub-a,.hero .sub .sub-b{display:block;}
+.hero .sub .sub-b{margin-top:2px;font-size:.88em;color:var(--muted);}
+.hero .updated .up-a,.hero .updated .up-b{display:block;}
+.hero .updated .up-a{color:var(--text-2);}
+.hero .updated .up-a b{font-weight:600;}
+.hero .updated i{font-style:normal;margin:0 .35em;color:var(--border-2);}
+.sc .four span{white-space:nowrap;}
+@media (max-width:760px){ .sc .four{grid-template-columns:minmax(0,1fr);} }
+/* 內文:標題補充說明、說明行、小圖示 */
+.md .h-sub{font-size:.7em;font-weight:500;color:var(--muted);letter-spacing:.02em;margin-left:.1em;}
+.md .h-sub.ok{color:var(--ok);}
+.md h2 .h-t{flex:1;min-width:0;}
+.md h1 a.url,.md h2 a.url,.md h3 a.url,.md h4 a.url{font-size:.74em;font-weight:500;margin-left:.2em;}
+.md .meta-ln{font-size:.86em;line-height:1.7;color:var(--muted);}
+.md .meta-ln strong{color:inherit;font-weight:600;}
+.md li.meta-ln::marker{color:var(--border-2);}
+.md p .pl{display:block;}
+.md p .pl.meta-ln+.pl.meta-ln{margin-top:2px;}
+.ic{display:inline-grid;place-items:center;width:1.1em;height:1.1em;margin:0 .32em 0 .04em;border-radius:50%;vertical-align:-.15em;font-style:normal;font-weight:800;font-size:.9em;line-height:1;color:#fff;}
+.ic.ok{background:#16a34a;}
+.ic.ok::before{content:"\2713";font-size:.74em;}
+.ic.warn{background:#e89a0c;border-radius:4px;}
+.ic.warn::before{content:"!";font-size:.8em;}
+.md blockquote .bq-ln{display:block;}
+.md blockquote .bq-ln+.bq-ln{margin-top:5px;}
+.md blockquote .bq-ln.has-ic{position:relative;padding-left:1.55em;}
+.md blockquote .bq-ln.has-ic>.ic:first-child{position:absolute;left:0;top:.42em;margin:0;}
 details.more{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);margin:12px 0;}
 details.more>summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:650;display:flex;align-items:center;gap:10px;}
 details.more>summary::-webkit-details-marker{display:none;}
@@ -5433,7 +5470,7 @@ function punctStr(s){
     });
     if(s===src)break;
   }
-  function nearCJK(t,k,dir){for(var j=0;j<4;j++,k+=dir){var ch=t.charAt(k);if(!ch||ch==="\n")return false;if(RE_CJK.test(ch))return true;}return false;}
+  function nearCJK(t,k,dir){for(var j=0;j<6;j++,k+=dir){var ch=t.charAt(k);if(!ch||ch==="\n")return false;if(RE_CJK.test(ch))return true;}return false;}
   return s.replace(/（([^()（）\n]*)\)/g,"（$1）").replace(/\(([^()（）\n]*)）/g,"（$1）");
 }
 var P_SKIP="a,code,kbd,pre,script,style,svg,button,input,textarea,time,.raw";
@@ -5607,7 +5644,9 @@ function updateFrame(fr){
 function postProcess(root){
   $$("a",root).forEach(function(a){
     var href=a.getAttribute("href");if(a.textContent!==href)return;
-    a.classList.add("url");a.title=href;var s=shortUrl(href);if(s!==href)a.textContent=s;
+    a.classList.add("url");a.title=href;
+    var s=/^https?:\/\/(www\.)?dcard\.tw\//.test(href)?"Dcard 原文":/^https?:\/\/(www\.)?ptt\.cc\//.test(href)?"PTT 原文":shortUrl(href);   /* 討論區連結只標來源 */
+    if(s!==href)a.textContent=s;
   });
   $$("table",root).forEach(function(tbl){
     var fr=document.createElement("div");fr.className="tframe";
@@ -5632,13 +5671,71 @@ function postProcess(root){
   });
   $$("h1,h2,h3,h4",root).forEach(function(h){if(!h.id)h.id="sec-"+(++hid);});
 }
+/* 標題結尾的(補充說明)縮成小字,目錄只用主標題 */
+function headSuffix(root){
+  $$("h1,h2,h3,h4",root).forEach(function(h){
+    if(h.classList.contains("fp-h")||h.querySelector(".h-t"))return;
+    var s=h.innerHTML.replace(/\s+$/,""),close=s.charAt(s.length-1);
+    if(close!=="）"&&close!==")")return;
+    var par=0,tags=0,open=-1;
+    for(var i=s.length-1;i>=0;i--){
+      var ch=s.charAt(i);
+      if(ch===">"){var j=s.lastIndexOf("<",i);if(s.charAt(j+1)==="/")tags++;else tags--;i=j;continue;}
+      if(ch==="）"||ch===")")par++;
+      else if(ch==="（"||ch==="("){par--;if(!par){if(!tags)open=i;break;}}
+    }
+    if(open<0)return;
+    var main=s.slice(0,open).trim(),note=s.slice(open+1,s.length-1).trim();
+    var mainTxt=main.replace(/<[^>]+>/g,"").trim();
+    if(mainTxt.length<2||!note||/[（(]$/.test(mainTxt))return;
+    var ok=/✅/.test(note);note=note.replace(/✅\s*/g,"");
+    h.setAttribute("data-toc",mainTxt.replace(/✅\s*/g,""));
+    h.innerHTML='<span class="h-t">'+main.replace(/✅\s*/g,"")+' <small class="h-sub'+(ok?" ok":"")+'">'+note+"</small></span>";
+  });
+  $$("h2",root).forEach(function(h){if(!h.querySelector(".h-t"))h.innerHTML='<span class="h-t">'+h.innerHTML+"</span>";});
+}
+/* 「來源:」「資料蒐集日期:」等說明行淡化 */
+var RE_META=/^\s*(主要來源|主要依據|資料來源|來源|115\s*對照來源|對照來源|資料蒐集日期|整理日期|查核日期)\s*[:：]/;
+function metaLines(root){
+  $$("li",root).forEach(function(li){if(RE_META.test(li.textContent))li.classList.add("meta-ln");});
+  $$("p",root).forEach(function(p){
+    var parts=p.innerHTML.split(/<br\s*\/?>/i);
+    if(!parts.some(function(x){return RE_META.test(x.replace(/<[^>]+>/g,""));}))return;
+    if(parts.length===1){p.classList.add("meta-ln");return;}
+    p.innerHTML=parts.map(function(x){return '<span class="pl'+(RE_META.test(x.replace(/<[^>]+>/g,""))?" meta-ln":"")+'">'+x+"</span>";}).join("");
+  });
+}
+/* 彩色 emoji ✅ ⚠ 換成統一的小圖示(原文引句、連結不動) */
+var RE_IC=new RegExp("✅|⚠"+String.fromCharCode(0xfe0f)+"?","g");
+function iconize(root){
+  if(!root)return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),list=[];
+  while(w.nextNode()){var n=w.currentNode;RE_IC.lastIndex=0;if(RE_IC.test(n.nodeValue)&&!n.parentNode.closest(P_SKIP))list.push(n);}
+  list.forEach(function(n){
+    var t=n.nodeValue,frag=document.createDocumentFragment(),last=0,m;RE_IC.lastIndex=0;
+    while((m=RE_IC.exec(t))){
+      frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      var ic=document.createElement("i"),ok=m[0]==="✅";ic.className="ic "+(ok?"ok":"warn");ic.setAttribute("role","img");ic.setAttribute("aria-label",ok?"已確認":"注意");
+      frag.appendChild(ic);last=m.index+m[0].length;if(t.charAt(last)===" ")last++;
+    }
+    frag.appendChild(document.createTextNode(t.slice(last)));n.parentNode.replaceChild(frag,n);
+  });
+}
+/* 多行的引用框:一行一段,開頭有圖示的行讓文字對齊 */
+function bqLines(root){
+  $$("blockquote",root).forEach(function(b){
+    var parts=b.innerHTML.split(/<br\s*\/?>/i);if(parts.length<2)return;
+    b.innerHTML=parts.map(function(x){x=x.trim();return '<span class="bq-ln'+(/^<i class="ic /.test(x)?" has-ic":"")+'">'+x+"</span>";}).join("");
+  });
+}
+function enhance(root){headSuffix(root);metaLines(root);iconize(root);bqLines(root);}
 function renderMd(el){
   if(el.getAttribute("data-rendered"))return;
   var id=el.getAttribute("data-src"),s=document.getElementById(id);
   var fp=/^md-fp-/.test(id);
   el.innerHTML=s?mdToHtml(s.textContent,fp):"";
   if(fp)groupFp(el);
-  postProcess(el);punctEl(el);el.setAttribute("data-rendered","1");
+  postProcess(el);punctEl(el);enhance(el);el.setAttribute("data-rendered","1");
 }
 
 /* ═════════ 116 公告狀態(由 #notice-main 清單自動讀取) ═════════ */
@@ -5704,6 +5801,43 @@ function tidyCompare(){
       td.innerHTML=tag+(lines.length>1?'<span class="cc-list">'+lines.map(function(l){return '<span class="cc-ln">'+l+"</span>";}).join("")+"</span>":h)+old;
     });
   });
+}
+/* 總覽「116 變動摘要」:每校一段 → 校名(連到該校頁)＋小標籤＋一行一項;說明類條目另成一組 */
+function tidyNotice(){
+  var box=$("#notice-main");if(!box)return;
+  var ul=$("ul",box);if(!ul)return;
+  var KEY={};SCHOOLS.forEach(function(s){s.st.forEach(function(n){KEY[n]=s.k;});KEY[s.n]=s.k;});
+  var rest=[];
+  $$("li",ul).forEach(function(li){
+    var h=li.innerHTML.replace(/^\s*✅\s*/,"");
+    var m=h.match(/^<strong>\s*(\S+?)\s*116\s*簡章已公告\s*[(（]([^)）]+)[)）]\s*(並完成核對)?\s*<\/strong>\s*[：:]\s*/);
+    if(!m){rest.push(li);return;}
+    var k=KEY[m[1]],name=k?'<a class="nm-name" href="#'+k+'">'+m[1]+"</a>":'<b class="nm-name">'+m[1]+"</b>";
+    var lines=splitTop(h.slice(m[0].length),"；;。").filter(function(l){return !/^詳見「[^」]+」分頁$/.test(l.replace(/<[^>]+>/g,"").trim());});
+    li.className="nm-item";
+    li.innerHTML='<div class="nm-hd">'+name+'<span class="cc-tag">116 簡章 '+m[2]+" 公告"+(m[3]?"・已核對":"")+"</span></div>"+
+      '<span class="cc-list">'+lines.map(function(l){return '<span class="cc-ln">'+l+"</span>";}).join("")+"</span>";
+  });
+  ul.classList.add("nm-list");
+  var lead=box.firstElementChild;if(lead&&lead.tagName==="STRONG")lead.hidden=true;
+  if(rest.length){
+    var h=document.createElement("div");h.className="nm-sub";h.textContent="使用注意";
+    var u2=document.createElement("ul");rest.forEach(function(li){u2.appendChild(li);});
+    box.appendChild(h);box.appendChild(u2);
+  }
+}
+/* 總覽頁首:副標在「｜」處分兩行;資料基準那行拆成「最後查核/初版」與「已更新至 116 的學校」 */
+function tidyHero(){
+  var sub=$("#p-overview .hero .sub");
+  if(sub){var p=sub.innerHTML.split(/\s*[｜|]\s*/);if(p.length===2)sub.innerHTML='<span class="sub-a">'+p[0]+'</span><span class="sub-b">'+p[1]+"</span>";}
+  var up=$("#updated");if(!up)return;
+  var t=up.textContent,last=(t.match(/最後查核\s*([\d-]+)/)||[])[1],first=(t.match(/初版\s*([\d-]+)/)||[])[1];
+  var base=(t.match(/資料基準[：:]\s*([^；;]+)/)||[])[1],done=(t.match(/[；;]\s*([^；;]*?)已更新至\s*116/)||[])[1];
+  if(!last||!base)return;
+  var names=done?done.split(/[·・、,，\s]+/).filter(Boolean):[];
+  up.innerHTML='<span class="up-a">最後查核 <b>'+esc(last)+"</b>"+(first?"<i>・</i>初版 "+esc(first):"")+"</span>"+
+    '<span class="up-b">資料基準：'+esc(base.trim())+"</span>"+
+    (names.length?'<span class="up-b">已更新至 116（'+names.length+" 校）："+esc(names.join("、"))+"</span>":"");
 }
 function regDates(s){
   var tds=ROWS[s.row];if(!tds||!tds[3])return "";
@@ -5976,7 +6110,7 @@ window.addEventListener("beforeprint",function(){$$("details.fac").forEach(funct
 window.addEventListener("afterprint",function(){$$("details.fac").forEach(function(d){d.open=d.dataset.o==="1";});});
 
 /* ═════════ 啟動 ═════════ */
-punctEl(pOverview);punctEl($("#notes"));if(cmp)tidyCompare();
+punctEl(pOverview);punctEl($("#notes"));if(cmp)tidyCompare();tidyNotice();tidyHero();iconize(pOverview);iconize($("#notes"));
 var r0=parseRoute(location.hash)||parseRoute(store("tuijian:last"))||{page:"overview"};
 render(r0,{initial:true});
 if(window.ResizeObserver&&topbar)new ResizeObserver(function(){afterLayout(measure);}).observe(topbar);
