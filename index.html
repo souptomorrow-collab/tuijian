@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#2f5bd3">
 <meta name="description" content="台大、清大、陽明交大、成大、台科大等 13 校電機相關研究所碩士班甄試整理:名額、時程、備審、口試、研究方向與師資。">
 <title>電機研究所推甄資料總整理(12 校 116 已更新,淡江 115 基準)</title>
-<script>try{var t=localStorage.getItem("tuijian:theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<script>try{var t=localStorage.getItem("tuijian:theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("tuijian:side-off")==="1")document.documentElement.classList.add("side-off");if(localStorage.getItem("tuijian:rail-off")==="1")document.documentElement.classList.add("rail-off");}catch(e){}</script>
 <style>
 :root{
   --bg:#f4f5f7; --surface:#ffffff; --surface-2:#f8f9fb; --surface-3:#eef0f4;
@@ -72,6 +72,25 @@ main{min-width:0;padding:28px 40px 96px;}
 .page{max-width:900px;margin:0 auto;}
 .rail{position:sticky;top:0;max-height:100vh;overflow-y:auto;padding:28px 20px 40px 4px;scrollbar-width:thin;}
 @media (max-width:1359px){ .main-wrap.has-rail{grid-template-columns:minmax(0,1fr);} .rail{display:none;} }
+/* 左側學校列、右側目錄可收合(狀態存 localStorage tuijian:side-off / rail-off,開頁前就套用) */
+.side-x{position:absolute;top:24px;right:10px;width:30px;height:30px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center;}
+.side-x:hover{border-color:var(--border-2);background:var(--surface-2);color:var(--text);}
+.edge-btn{position:fixed;top:16px;z-index:45;display:none;align-items:center;gap:6px;height:36px;padding:0 12px;border:1px solid var(--border-2);border-radius:10px;background:var(--surface);color:var(--text-2);box-shadow:var(--shadow-sm);cursor:pointer;font:600 .82rem var(--font);}
+.edge-btn:hover{border-color:var(--brand);color:var(--brand);}
+#sideOn{left:14px;} #railOn{right:18px;}
+@media (min-width:1100px){
+  :root.side-off .app{grid-template-columns:minmax(0,1fr);}
+  :root.side-off .sidebar{display:none;}
+  :root.side-off #sideOn{display:flex;}
+  :root.side-off main{padding-top:64px;}
+}
+@media (max-width:1099px){ .side-x{display:none;} }
+@media (min-width:1360px){
+  :root.rail-off .main-wrap.has-rail{grid-template-columns:minmax(0,1fr);}
+  :root.rail-off .rail{display:none;}
+  :root.rail-off body.has-toc #railOn{display:flex;}
+}
+:root.side-off .page,:root.rail-off .page{max-width:1040px;}
 
 /* ═══════════ 側邊導覽 ═══════════ */
 .brand{display:flex;gap:11px;align-items:center;padding:20px 20px 14px;text-decoration:none;color:var(--text);}
@@ -384,6 +403,20 @@ details.fac .tframe{margin:0;}
 .toc a.lv2{padding-left:24px;font-size:.8rem;}
 .toc a:hover{color:var(--text);}
 .toc a.on{border-left-color:var(--brand);color:var(--brand-ink);font-weight:650;}
+/* 目錄分組:有子項目的大項右側有展開鈕,預設只展開目前讀到的那一組 */
+.toc-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0 8px 12px;}
+.toc-hd .toc-h{margin:0;}
+.rail-x{display:flex;align-items:center;gap:3px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--muted);font:600 .72rem var(--font);padding:3px 6px;cursor:pointer;}
+.rail-x:hover{border-color:var(--border-2);color:var(--text);background:var(--surface-2);}
+.toc ul.sub{list-style:none;margin:0;padding:0;display:none;}
+.toc li.tg.open>ul.sub{display:block;}
+.toc li.tg{position:relative;}
+.toc li.tg.has>a{padding-right:30px;}
+.toc .tw{position:absolute;right:2px;top:3px;width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center;}
+.toc .tw:hover{background:var(--surface-3);color:var(--text);}
+.toc .tw svg{transition:transform .15s ease;}
+.toc li.tg.open>.tw svg{transform:rotate(90deg);}
+.sheet .toc .tw{top:7px;width:30px;height:30px;}
 
 /* ═══════════ 搜尋面板 ═══════════ */
 .palette{position:fixed;inset:0;z-index:100;display:none;}
@@ -453,6 +486,7 @@ mark.hl.cur{background:var(--mark-cur);color:#fff;box-shadow:0 0 0 2px color-mix
 <div class="app">
 <aside class="sidebar" id="sidebar" aria-label="網站導覽">
   <a class="brand" href="#overview"><span class="brand-mark">推甄</span><span class="brand-t"><b>電機推甄總整理</b><span>116 學年度・13 校</span></span></a>
+  <button type="button" class="side-x" id="sideOff" aria-label="收合左側欄" title="收合左側欄"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/></svg></button>
   <button class="search-btn" type="button" data-open-search><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜尋教授、關鍵字…</span><kbd>Ctrl K</kbd></button>
   <nav class="nav" id="nav" aria-label="主選單"></nav>
   <div class="side-foot">
@@ -644,6 +678,8 @@ mark.hl.cur{background:var(--mark-cur);color:#fff;box-shadow:0 0 0 2px color-mix
 </div>
 
 <div class="fab"><button type="button" id="tocBtn" aria-label="本頁目錄" title="本頁目錄"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg></button><button type="button" id="topBtn" aria-label="回到頂端" title="回到頂端"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 6-6 6 6"/></svg></button></div>
+<button type="button" class="edge-btn" id="sideOn" aria-label="展開左側欄" title="展開左側欄"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>學校</button>
+<button type="button" class="edge-btn" id="railOn" aria-label="展開本頁目錄" title="展開本頁目錄"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 17-5-5 5-5M20 17l-5-5 5-5"/></svg>目錄</button>
 <div class="sheet" id="tocSheet"><div class="bg"></div><div class="pan" role="dialog" aria-label="本頁目錄"><div class="grab"></div><div class="pan-body"></div></div></div>
 <div class="hitbar" id="hitbar" role="status"><span class="t"></span><button type="button" data-a="prev" aria-label="上一處" title="上一處">▲</button><button type="button" data-a="next" aria-label="下一處" title="下一處">▼</button><button type="button" data-a="close" aria-label="關閉標示" title="關閉標示">✕</button></div>
 <div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="搜尋">
@@ -7241,18 +7277,58 @@ function buildToc(view){
   var L1=[1,2,3].filter(function(l){return cnt[l]>=2;})[0];tocItems=[];
   if(L1){var sub=L1<3&&cnt[L1]+cnt[L1+1]<=45;
     hs.forEach(function(h){var lv=lvOf(h);if(lv===L1||(sub&&lv===L1+1)){var sec=h.closest(".sec");tocItems.push({h:h,sub:lv!==L1,sec:sec,first:!!sec&&sec.firstElementChild===h});}});}
+  /* 第一個大項之前的子項(例如上層標題只有一個)提升為大項,不要出現沒有上層的縮排 */
+  var seenL1=false;tocItems.forEach(function(t){if(!t.sub)seenL1=true;else if(!seenL1)t.sub=false;});
   var ok=tocItems.length>=3;
-  mainWrap.classList.toggle("has-rail",ok);tocBtn.classList.toggle("show",ok);
-  var html=ok?'<div class="toc-h">本頁目錄</div><ul class="toc">'+tocItems.map(function(t,i){
-    var full=(t.h.getAttribute("data-toc")||(t.h.classList.contains("ov-h")?t.h.firstChild.textContent:t.h.textContent)).replace(/\s+/g," ").trim();
+  mainWrap.classList.toggle("has-rail",ok);tocBtn.classList.toggle("show",ok);document.body.classList.toggle("has-toc",ok);
+  /* 分組:每個大項帶著它後面的子項 */
+  var groups=[];tocItems.forEach(function(t,i){if(!t.sub)groups.push({i:i,kids:[]});else groups[groups.length-1].kids.push(i);t.g=groups.length-1;});
+  tocGroup=-1;
+  function item(i,cls){
+    var t=tocItems[i],full=(t.h.getAttribute("data-toc")||(t.h.classList.contains("ov-h")?t.h.firstChild.textContent:t.h.textContent)).replace(/\s+/g," ").trim();
     var label=full.replace(/[;；,，]?\s*(來源|取自)?\s*https?:\/\/[A-Za-z0-9._~:/?#@!$&*+=%-]+/g,"").replace(/\(\s*\)|（\s*）/g,"").trim()||full;
-    return '<li><a href="#" data-i="'+i+'" class="'+(t.sub?"lv2":"lv1")+'" title="'+esc(full)+'"><span>'+esc(label)+"</span></a></li>";
-  }).join("")+"</ul>":"";
-  rail.innerHTML=html;$(".pan-body",sheet).innerHTML=html;
+    label=label.replace(/\s*116\s*學年度碩士班甄試報名人數$/,"").replace(/^116\s*學年度\s*/,"116 ").trim()||label;   /* 去掉每項都一樣的字 */
+    var hsub=$(".h-sub",t.h);   /* 標題結尾括號在畫面上變成小字 .h-sub */
+    if(!/^11[56]\s/.test(label)&&(hsub?/^\s*115\s*學年度/.test(hsub.textContent):/[(（]\s*115\s*學年度/.test(t.h.textContent)))label="115 "+label;   /* 括號寫「115 學年度…」的舊資料段落,目錄標明年度 */
+    return '<a href="#" data-i="'+i+'" class="'+cls+'" title="'+esc(full)+'"><span>'+esc(label)+"</span></a>";
+  }
+  var TW='<button type="button" class="tw" aria-expanded="false" aria-label="展開子項目"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>';
+  var list='<ul class="toc">'+groups.map(function(G,gi){
+    var has=G.kids.length>0;
+    return '<li class="tg'+(has?" has":"")+'" data-g="'+gi+'">'+(has?TW:"")+item(G.i,"lv1")+
+      (has?'<ul class="sub">'+G.kids.map(function(i){return "<li>"+item(i,"lv2")+"</li>";}).join("")+"</ul>":"")+"</li>";
+  }).join("")+"</ul>";
+  var head='<div class="toc-hd"><span class="toc-h">本頁目錄</span><button type="button" class="rail-x" data-rail-off aria-label="收合本頁目錄" title="收合本頁目錄">收合<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5M13 17l5-5-5-5"/></svg></button></div>';
+  rail.innerHTML=ok?head+list:"";$(".pan-body",sheet).innerHTML=ok?'<div class="toc-h">本頁目錄</div>'+list:"";
 }
-function tocClick(e){var a=e.target.closest("a[data-i]");if(!a)return;e.preventDefault();var t=tocItems[+a.getAttribute("data-i")];if(!t)return;sheet.classList.remove("show");t.h.scrollIntoView({block:"start"});}
+/* 目錄分組開合:目前讀到的那組自動展開;手動展開的組保持展開(pin=1),手動收起目前那組則維持收起直到讀到別組(pin=0) */
+var tocGroup=-1;
+function tocSync(){
+  $$("li.tg",rail).concat($$("li.tg",sheet)).forEach(function(li){
+    var g=+li.getAttribute("data-g"),pin=li.getAttribute("data-pin"),open=pin==="1"||(pin!=="0"&&g===tocGroup);
+    li.classList.toggle("open",open);var b=$(".tw",li);if(b)b.setAttribute("aria-expanded",open?"true":"false");
+  });
+}
+function tocToggle(btn){
+  var li=btn.closest("li.tg"),g=li.getAttribute("data-g"),open=!li.classList.contains("open");
+  $$('li.tg[data-g="'+g+'"]',rail).concat($$('li.tg[data-g="'+g+'"]',sheet)).forEach(function(x){x.setAttribute("data-pin",open?"1":"0");});
+  tocSync();
+}
+function tocClick(e){
+  var tw=e.target.closest(".tw");if(tw){e.preventDefault();tocToggle(tw);return;}
+  if(e.target.closest("[data-rail-off]")){setPanel("rail",true);return;}
+  var a=e.target.closest("a[data-i]");if(!a)return;e.preventDefault();var t=tocItems[+a.getAttribute("data-i")];if(!t)return;sheet.classList.remove("show");t.h.scrollIntoView({block:"start"});
+}
 rail.addEventListener("click",tocClick);
 sheet.addEventListener("click",function(e){if(e.target.classList.contains("bg"))sheet.classList.remove("show");else tocClick(e);});
+/* 左側學校列、右側目錄收合 */
+function setPanel(which,off){
+  document.documentElement.classList.toggle(which+"-off",off);store("tuijian:"+which+"-off",off?"1":"0");
+  afterLayout(function(){measure();spy();});
+}
+$("#sideOff").addEventListener("click",function(){setPanel("side",true);});
+$("#sideOn").addEventListener("click",function(){setPanel("side",false);});
+$("#railOn").addEventListener("click",function(){setPanel("rail",false);});
 
 /* ═════════ 報名人數:台科、雲科即時數字 ═════════ */
 /* 報名期間 GitHub Actions 每 15 分鐘重抓官方即時統計,存在 live 分支的 apply_live.json;比內嵌的新(查詢時間較晚)就換上,抓不到就沿用內嵌數字 */
@@ -7281,7 +7357,10 @@ function spy(){
     if(top<=line)c=i;else break;
   }
   $$("a[data-i]",rail).concat($$("a[data-i]",sheet)).forEach(function(a){a.classList.toggle("on",+a.getAttribute("data-i")===c);});
-  var on=$("a.on",rail);
+  var g=tocItems[c].g;
+  if(g!==tocGroup){tocGroup=g;$$('li.tg[data-pin="0"]',rail).concat($$('li.tg[data-pin="0"]',sheet)).forEach(function(x){x.removeAttribute("data-pin");});}
+  tocSync();
+  var on=$("a.on",rail);if(on&&!on.offsetParent)on=null;   /* 所在組被手動收起時不捲動目錄 */
   if(on&&rail.scrollHeight>rail.clientHeight){var r1=on.getBoundingClientRect(),ra=rail.getBoundingClientRect();if(r1.top<ra.top+40||r1.bottom>ra.bottom-40)rail.scrollTop+=r1.top-ra.top-ra.height/2;}
 }
 var topBtn=$("#topBtn"),sRaf=0;
