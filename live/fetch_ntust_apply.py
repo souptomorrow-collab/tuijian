@@ -11,7 +11,7 @@ URL116 = "https://entrance.ntust.edu.tw/16entry1/Statistics.aspx"
 URL115 = "https://entrance.ntust.edu.tw/15entry1/Statistics.aspx"
 # (系所組別, 代碼, 116 名額顯示, 116 名額, 115 完成報名, 115 名額);名額取自 data/ntust.md(116 簡章)
 ROWS = [
-    ("電機系 AI組", "0700", "5(外加)", 5, 70, 5),
+    ("電機系 AI組(外加名額)", "0700", "5", 5, 70, 5),
     ("電機系 甲組(電力與能源)", "0710", "29", 29, 131, 30),
     ("電機系 乙組(電力電子)", "0720", "16", 16, 151, 17),
     ("電機系 丙組(系統工程)", "0730", "17", 17, 182, 15),
@@ -70,7 +70,7 @@ for name, code, qs, q, y115, q115 in ROWS:
     out.append("| %s | %s | %s | %d | %d | %s | %d | %d | %s |" % (name, code, qs, done, undone, r1(done / q), q115, y115, r1(y115 / q115)))
 out += ["",
         "- 116 報名比 115 晚 5 天開始(115 為 9/25–10/2);報名截止前和 115 的最終數字相比會偏低。",
-        "- 115 欄取自同一系統的 115 統計表,報名早已結束,即為最終數字;116 名額取自 116 簡章(見「簡章」分頁),AI 組是外加名額。",
+        "- 115 欄取自同一系統的 115 統計表,報名早已結束,即為最終數字;116 名額取自 116 簡章(見「簡章」分頁)。",
         "- 來源:[116 即時報名人數統計表](%s)、[115 即時報名人數統計表](%s)。" % (URL116, URL115), ""]
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 dst = sys.argv[1] if len(sys.argv) > 1 else os.path.join(root, "data", "apply_ntust.md")
