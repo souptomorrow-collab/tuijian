@@ -53,7 +53,7 @@ elif now < SETTLED:
 else:
     status = "**狀態:報名已截止,官方查核期已過**;以下為官方統計表目前數字,正式人數以官方公告為準。"
 upd = "查詢時間 %s" % now.strftime("%Y-%m-%d %H:%M")
-upd += ";報名期間網頁每 15 分鐘自動重抓一次。" if now < LIVE_END else "。"
+upd += ";報名期間網頁會定時自動重抓官方數字,實際間隔視 GitHub 排程而定(約 15 分鐘到數小時)。" if now < LIVE_END else "。"
 
 out = ["# 台科大 116 學年度碩士班甄試報名人數", "",
        "> " + status,

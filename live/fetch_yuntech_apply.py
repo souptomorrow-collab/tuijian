@@ -48,7 +48,7 @@ elif now < QUERY_END:
 else:
     status = "**狀態:報名已截止**;以下為官方查詢頁目前數字(115 學年度的同一頁在報名結束後一直維持最終數字)。"
 upd = "查詢時間 %s" % now.strftime("%Y-%m-%d %H:%M")
-upd += ";報名期間網頁每 15 分鐘自動重抓一次。" if now < LIVE_END else "。"
+upd += ";報名期間網頁會定時自動重抓官方數字,實際間隔視 GitHub 排程而定(約 15 分鐘到數小時)。" if now < LIVE_END else "。"
 
 out = ["# 雲科 116 學年度碩士班甄試報名人數", "",
        "> " + status,
