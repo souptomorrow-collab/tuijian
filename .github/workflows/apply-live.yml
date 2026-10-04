@@ -1,0 +1,33 @@
+# 報名期間每 15 分鐘重抓台科、雲科官方即時報名人數,存到 live 分支的 apply_live.json(網頁打開時讀取)。
+# live 分支每次整個覆蓋(只有一個 commit),不會讓 main 的紀錄變長,也不會和本機推送 main 衝突。
+name: apply-live
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: apply-live
+  cancel-in-progress: true
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: Asia/Taipei
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official numbers
+        run: python3 live/build_live.py "$RUNNER_TEMP/apply_live.json"
+      - name: Publish to live branch
+        run: |
+          f="$RUNNER_TEMP/apply_live.json"
+          if [ ! -f "$f" ]; then echo "nothing to publish"; exit 0; fi
+          mkdir -p "$RUNNER_TEMP/live" && cd "$RUNNER_TEMP/live"
+          git init -q -b live
+          cp "$f" apply_live.json
+          git add apply_live.json
+          git -c user.name="apply-live-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "apply-live $(date '+%Y-%m-%d %H:%M')"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" live
